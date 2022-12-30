@@ -1,0 +1,41 @@
+.span1{
+    font-size: 12px;
+    color: white;
+}
+body{
+  background-color: black;
+}
+.container1{
+    background-color: rgb(49, 48, 48);
+    border-radius: 5%;
+}
+
+.topswitch{
+    background-color: black;
+    border-radius: 0%;
+}
+.rightswitch{
+    border-radius: 40px 999em 999em 40px;
+}
+.leftswitch{
+    border-radius:  999em 40px 40px  999em ;
+}
+.span2{
+    font-size: 10px;
+    color: #fff;
+    font-weight: 100;
+}
+.input1{
+    border-radius: 20px;
+    background-color: transparent;
+    border: 2px solid #14ff82;
+}
+.input1::placeholder{
+    font-size: 10px;
+}
+#btnSubmit{
+    display: none;
+}
+.css-1s2u09g-control{
+    border-radius: 20px;
+}
