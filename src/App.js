@@ -30,16 +30,17 @@ function App() {
   const [err,setErr] = useState("")
 
 
-  async function handleLogin(){
+  const handleLogin=async(e)=>{
+    e.preventDefault()
+    console.log('reached here');
     const details = {
-      first_name : refFname1.current.value,
-      last_name: refLname1.current.value,
-      user_name : refUsername1.current.value,
-      Password : refPassword1.current.value,
-      Email:refEmail1.current.value,
+      firstname:fname,
+      lastname: lname,
+      username : username,
+      password : password,
+      email:email,
       timezone:selectedTimezone
     }
-    e.preventDefault()
     console.log(fname,'asdfasdf');
     try{
       if(!fname){
@@ -53,7 +54,13 @@ function App() {
       }else if(!email){
         setErr("email is required")
       }else{
-       await axios.post("https://brototype.onrender.com/api/talentsignup",details)
+       await axios.post("https://brototype.onrender.com/api/talentsignup",details).then((res)=>{
+        if(res.data.error){
+          setErr(res.data.err)
+        }else{
+          setErr("succesfully Registered")
+        }
+       })
       }
     }catch(err){
       console.log(err);
@@ -78,19 +85,19 @@ function App() {
     <MDBTabs pills justify className='mb-3 d-flex flex-row '>
       
         <MDBTabsItem>
-          {justifyActive != 'tab1'? <a className='topswitch btn d-flex justify-content-center leftswitch'  onClick={() => handleJustifyClick('tab1')} active={justifyActive === 'tab1'}>
-            <span className='span1'> FAN SIGNUP </span> 
-          </a>: <a className='topswitch btn d-flex justify-content-center leftswitch rounded-left' style={{backgroundColor:"#14ff82"}}  onClick={() => handleJustifyClick('tab1')} active={justifyActive === 'tab1'}>
-          <span className='span1'style={{color:"black"}}> FAN SIGNUP </span>
+          {justifyActive == "tab1"? <a className='topswitch btn d-flex justify-content-center leftswitch'  style={{backgroundColor:"#14ff82"}}   onClick={() => handleJustifyClick('tab1')} active={justifyActive === 'tab1'}>
+            <span className='span1' style={{color:"black"}}> FAN SIGNUP </span> 
+          </a>: <a className='topswitch btn d-flex justify-content-center leftswitch rounded-left' onClick={() => handleJustifyClick('tab1')} active={justifyActive === 'tab1'}>
+          <span className='span1'> FAN SIGNUP </span>
           </a>}
          
         </MDBTabsItem>
         <MDBTabsItem>
-       { justifyActive != 'tab2'? 
-          <a className='topswitch btn d-flex justify-content-center rightswitch' onClick={() => handleJustifyClick('tab2')} active={justifyActive === 'tab2'}>
-            <span className='span1'> TALENT SIGNUP </span>
-          </a>:<a className='topswitch btn d-flex justify-content-center rightswitch' style={{backgroundColor:"#14ff82"}} onClick={() => handleJustifyClick('tab2')} active={justifyActive === 'tab2'}>
-          <span className='span1' style={{color:"black"}}> TALENT SIGNUP </span>
+       { justifyActive == "tab2"? 
+          <a className='topswitch btn d-flex justify-content-center rightswitch' style={{backgroundColor:"#14ff82"}} onClick={() => handleJustifyClick('tab2')} active={justifyActive === 'tab2'}>
+            <span className='span1'style={{color:"black"}}> TALENT SIGNUP </span>
+          </a>:<a className='topswitch btn d-flex justify-content-center rightswitch'  onClick={() => handleJustifyClick('tab2')} active={justifyActive === 'tab2'}>
+          <span className='span1' > TALENT SIGNUP </span>
           </a>}
         </MDBTabsItem>
       </MDBTabs>
@@ -102,8 +109,8 @@ function App() {
           <div className="text-center mb-3 ">
             <p className='text-white'>Create Your Fan Account</p>
           </div>
-          { err && <div className="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800" role="alert"> {err}</div>}
-          <form onSubmit={handleLogin}>
+          { err && <div className="alert alert-danger text-center" role="alert"> {err}</div>}
+          <form>
           <div className='d-flex flex-column'>
 
           <span className='span2 '>First Name*</span>
@@ -134,9 +141,9 @@ function App() {
             <span className='span2'>I agree to the <span style={{color:"#14ff82"}}> terms and condition </span> </span>
           </div>
 
-          <button className="w-100"  style={{borderRadius:"20px",backgroundColor:"#14ff82",color:"black"}}>Sign Up</button>
+          <button className="w-100"  style={{borderRadius:"20px",backgroundColor:"#14ff82",color:"black"}} onClick={handleLogin}>Sign Up</button>
           <div className="d-flex justify-content-center ">
-            <span className='span2'>Already have an account <a style={{color:"#14ff82"}}> Signin </a> </span>
+            <span className='span2'>Already have an account <a style={{color:"#14ff82"}} > Signin </a> </span>
           </div>
           </form>
         </MDBTabsPane>
