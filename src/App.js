@@ -39,9 +39,46 @@ function App() {
       username : username,
       password : password,
       email:email,
-      timezone:selectedTimezone
+      timezone:selectedTimezone.toString()
     }
-    console.log(fname,'asdfasdf');
+    console.log(typeof(selectedTimezone));
+    try{
+      if(!fname){
+        setErr("First Name is required")
+      }else if(!lname){
+        setErr("Last Name is required")
+      }else if(!username){
+        setErr("UserName is required")
+      }else if(!password){
+        setErr("password is required")
+      }else if(!email){
+        setErr("email is required")
+      }else{
+       await axios.post("https://brototype.onrender.com/api/fansignup",details).then((res)=>{
+        if(res.data.error){
+          setErr(res.data.err)
+        }else{
+          setErr("succesfully Registered")
+        }
+       })
+      }
+    }catch(err){
+      console.log(err);
+    }
+  }
+
+  const handleLogin1=async(e)=>{
+    e.preventDefault()
+    console.log('reached here');
+    const details = {
+      firstname:fname,
+      lastname: lname,
+      username : username,
+      password : password,
+      email:email,
+      timezone:selectedTimezone.toString()
+    }
+    console.log(typeof(selectedTimezone));
     try{
       if(!fname){
         setErr("First Name is required")
@@ -55,8 +92,11 @@ function App() {
         setErr("email is required")
       }else{
        await axios.post("https://brototype.onrender.com/api/talentsignup",details).then((res)=>{
+        console.log(res);
         if(res.data.error){
-          setErr(res.data.err)
+          setErr(res.data.error)
+        }else if(res.data.err){
+          console.log(err);
         }else{
           setErr("succesfully Registered")
         }
@@ -153,15 +193,22 @@ function App() {
         <div className="text-center mb-3 ">
             <p className='text-white'>Create Your Fan Account</p>
           </div>
+          { err && <div className="alert alert-danger text-center" role="alert"> {err}</div>}
+          <form>
           <div className='d-flex flex-column'>
+
           <span className='span2 '>First Name*</span>
-          <input className='mb-2 input1 ' placeholder='First Name' type='text'/>
+          <input ref={refFname1} className='mb-2 input1' onChange={(e)=>{setFname(e.target.value)}}  placeholder='First Name'  type='text'/>
+          
           <span className='span2'>Last Name*</span>
-          <input className='mb-2 input1' placeholder='Last Name'   type='text'/>
+          <input ref={refLname1} className='mb-2 input1'  onChange={(e)=>{setLname(e.target.value)}}  placeholder='Last Name'  type='text'/>
+          
           <span className='span2'>UserName*</span>
-          <input className='mb-2 input1' placeholder='UserName'   type='text'/>
+          <input ref={refUsername1} className='mb-2 input1'  onChange={(e)=>{setUsername(e.target.value)}} placeholder='UserName' type='text'/>
+          
           <span className='span2'>Email*</span>
-          <input className='mb-2 input1' placeholder='Email'   type='email'/>
+          <input ref={refEmail1} className='mb-2 input1'  onChange={(e)=>{setEmail(e.target.value)}} placeholder='Email'  type='email'/>
+          
           <span className='span2'>TimeZone*</span>
           <TimezoneSelect className='mb-2'
           value={selectedTimezone}
@@ -169,20 +216,20 @@ function App() {
         />
 
           <span className='span2'>Password*</span>
-          <input className='mb-2 input1' placeholder='password' type='password'/>
+          <input ref={refPassword1} className='mb-2 input1' placeholder='password'  onChange={(e)=>{setPassword(e.target.value)}}  type='password'/>
           </div>
 
 
           <div className="d-flex justify-content-center mx-4 ">
-            <MDBCheckbox style={{width:"10px",height:"10px"}} name='flexCheck' value='' id='flexCheckDefault'  />
+            <MDBCheckbox style={{width:"10px",height:"10px"}} name='flexCheck'  />
             <span className='span2'>I agree to the <span style={{color:"#14ff82"}}> terms and condition </span> </span>
           </div>
 
-          <MDBBtn className="w-100" style={{borderRadius:"20px",backgroundColor:"#14ff82",color:"black"}}>Sign Up</MDBBtn>
+          <button className="w-100"  style={{borderRadius:"20px",backgroundColor:"#14ff82",color:"black"}} onClick={handleLogin1}>Sign Up</button>
           <div className="d-flex justify-content-center ">
-            <span className='span2'>Already have an account <a style={{color:"#14ff82"}}> Signin </a> </span>
+            <span className='span2'>Already have an account <a style={{color:"#14ff82"}} > Signin </a> </span>
           </div>
-
+          </form>
 
         </MDBTabsPane>
 
